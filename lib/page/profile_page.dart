@@ -159,7 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Icons.person,
             Column(
               children: [
-                _item("Nama Lengkap", "M. Rafid Tsabitdly"),
+                _item("Nama Lengkap", "Muhammad Rafid Tsabitdly"),
                 _item(
                   "Lokasi",
                   "Serpong Utara, Kota Tangerang Selatan, Banten, Indonesia",
