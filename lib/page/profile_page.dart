@@ -58,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
               // ================= PROFILE INFO =================
               const Text(
-                "Muhammad Rafid Tsabitdly",
+                "M. Rafid Tsabitdly",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
 
