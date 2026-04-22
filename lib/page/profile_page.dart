@@ -1,5 +1,38 @@
 import 'package:flutter/material.dart';
 
+// ================= GLOBAL STATE =================
+class UserProfile {
+  String nama;
+  String lokasi;
+  String jabatan;
+  String profesi;
+  String tentangSaya;
+  String expRole;
+  String expCompany;
+  String expYear;
+  String pendidikan;
+  String email;
+  String phone;
+
+  UserProfile({
+    this.nama = "",
+    this.lokasi = "",
+    this.jabatan = "",
+    this.profesi = "",
+    this.tentangSaya = "",
+    this.expRole = "",
+    this.expCompany = "",
+    this.expYear = "",
+    this.pendidikan = "",
+    this.email = "",
+    this.phone = "",
+  });
+}
+
+// Mengosongkan data saat aplikasi pertama kali dijalankan
+final ValueNotifier<UserProfile> profileNotifier = ValueNotifier(UserProfile());
+// ================================================
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -9,146 +42,144 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   bool isDetailVisible = false;
-
-  final Color primaryColor = const Color(0xFF0A66C2);
+  final Color primaryColor = const Color(0xFF0A66C2); // LinkedIn Blue
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[100],
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // ================= HEADER =================
-              Stack(
-                clipBehavior: Clip.none,
+    return ValueListenableBuilder<UserProfile>(
+      valueListenable: profileNotifier,
+      builder: (context, profileData, child) {
+        bool isDataEmpty = profileData.nama.isEmpty;
+
+        return Scaffold(
+          backgroundColor: Colors.grey[100],
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
                 children: [
-                  Container(
-                    height: 180,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          'https://media.licdn.com/dms/image/v2/D5616AQFQ-5whuUIUMw/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1729172902860?e=1778112000&v=beta&t=wXNXC3xKu8gD1dBlBSrP9Nlh_shFFhvlR4uBkVvEfnQ',
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-
-                  Positioned(
-                    bottom: -50,
-                    left: 0,
-                    right: 0,
-                    child: CircleAvatar(
-                      radius: 52,
-                      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                      child: CircleAvatar(
-                        radius: 48,
-                        backgroundImage: NetworkImage(
-                          'https://media.licdn.com/dms/image/v2/D5603AQE9Et_ZG6Rgnw/profile-displayphoto-shrink_800_800/B56ZQWuWq0HIAc-/0/1735548038326?e=1778112000&v=beta&t=hdRd2rGHLqv28V9EuFXN_PFKANbuidxq9IojeniFhuk',
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 60),
-
-              // ================= PROFILE INFO =================
-              const Text(
-                "M. Rafid Tsabitdly",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-
-              const SizedBox(height: 4),
-
-              const Text(
-                "Tangerang Selatan, Banten, Indonesia",
-                style: TextStyle(color: Colors.grey),
-              ),
-
-              const SizedBox(height: 6),
-
-              const Text(
-                "Founder & CEO",
-                style: TextStyle(color: Colors.black54),
-              ),
-
-              const SizedBox(height: 16),
-
-              // ================= STATS =================
-              Card(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  // ================= HEADER (DIBUAT STATIS) =================
+                  Stack(
+                    clipBehavior: Clip.none,
                     children: [
-                      _statItem("Project", "4"),
-                      _divider(),
-                      _statItem("Followers", "2532"),
+                      Container(
+                        height: 180,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              'https://media.licdn.com/dms/image/v2/D5616AQFQ-5whuUIUMw/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1729172902860?e=1778112000&v=beta&t=wXNXC3xKu8gD1dBlBSrP9Nlh_shFFhvlR4uBkVvEfnQ',
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: -50,
+                        left: 0,
+                        right: 0,
+                        child: CircleAvatar(
+                          radius: 52,
+                          backgroundColor: Colors.white,
+                          child: const CircleAvatar(
+                            radius: 48,
+                            backgroundImage: NetworkImage(
+                              'https://media.licdn.com/dms/image/v2/D5603AQE9Et_ZG6Rgnw/profile-displayphoto-shrink_800_800/B56ZQWuWq0HIAc-/0/1735548038326?e=1778112000&v=beta&t=hdRd2rGHLqv28V9EuFXN_PFKANbuidxq9IojeniFhuk',
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ),
 
-              const SizedBox(height: 20),
-
-              // ================= BUTTON =================
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: primaryColor),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                  const SizedBox(height: 60),
+                  const Text(
+                    "M. Rafid Tsabitdly",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 22,
-                    vertical: 10,
+                  const SizedBox(height: 4),
+                  const Text(
+                    "Tangerang Selatan, Banten, Indonesia",
+                    style: TextStyle(color: Colors.grey),
                   ),
-                ),
-                onPressed: () {
-                  setState(() {
-                    isDetailVisible = true;
-                  });
-                },
-                child: Text(
-                  "Lihat Detail Profil",
-                  style: TextStyle(
-                    color: primaryColor,
-                    fontWeight: FontWeight.w600,
+                  const SizedBox(height: 6),
+                  const Text(
+                    "Founder & CEO",
+                    style: TextStyle(color: Colors.black54),
                   ),
-                ),
+
+                  const SizedBox(height: 16),
+
+                  // ================= STATS =================
+                  Card(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _statItem("Project", isDataEmpty ? "0" : "4"),
+                          _divider(),
+                          _statItem("Followers", isDataEmpty ? "0" : "2532"),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // ================= BUTTON =================
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: primaryColor),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 22,
+                        vertical: 10,
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isDetailVisible = true;
+                      });
+                    },
+                    child: Text(
+                      "Lihat Detail Profil",
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  // ================= DETAIL =================
+                  AnimatedCrossFade(
+                    duration: const Duration(milliseconds: 300),
+                    crossFadeState: isDetailVisible
+                        ? CrossFadeState.showSecond
+                        : CrossFadeState.showFirst,
+                    firstChild: const SizedBox(),
+                    secondChild: _buildDetailSection(profileData, isDataEmpty),
+                  ),
+
+                  const SizedBox(height: 30),
+                ],
               ),
-
-              const SizedBox(height: 10),
-
-              // ================= DETAIL =================
-              AnimatedCrossFade(
-                duration: const Duration(milliseconds: 300),
-                crossFadeState: isDetailVisible
-                    ? CrossFadeState.showSecond
-                    : CrossFadeState.showFirst,
-                firstChild: const SizedBox(),
-                secondChild: _buildDetailSection(),
-              ),
-
-              const SizedBox(height: 30),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  // ================= DETAIL SECTION =================
-
-  Widget _buildDetailSection() {
+  // ================= DETAIL SECTION (DINAMIS) =================
+  Widget _buildDetailSection(UserProfile data, bool isEmpty) {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.all(16),
@@ -159,68 +190,54 @@ class _ProfilePageState extends State<ProfilePage> {
             Icons.person,
             Column(
               children: [
-                _item("Nama Lengkap", "Muhammad Rafid Tsabitdly"),
-                _item(
-                  "Lokasi",
-                  "Serpong Utara, Kota Tangerang Selatan, Banten, Indonesia",
-                ),
-                _item("Jabatan", "Founder & CEO"),
-                _item("Profesi", "Wirausaha"),
+                _item("Nama Lengkap", isEmpty ? "-" : data.nama),
+                _item("Lokasi", isEmpty ? "-" : data.lokasi),
+                _item("Jabatan", isEmpty ? "-" : data.jabatan),
+                _item("Profesi", isEmpty ? "-" : data.profesi),
               ],
             ),
           ),
-
           _modernCard(
             "Tentang Saya",
             Icons.info_outline,
-            const Text(
-              "I am a third-semester Information Systems student at Pamulang University and the founder of a business in the telecommunications sector. My academic journey, combined with entrepreneurial experience, has shaped my interest in technology, business strategy, and digital innovation. \n\n"
-              "I possess strong skills in Microsoft Office, photo and video editing, and product analysis. I am committed to continuous learning and eager to embrace new knowledge and challenges that can enhance both my professional and personal growth. \n\n"
-              "With a solid foundation in information systems and hands-on experience in entrepreneurship, I aim to contribute by delivering innovative solutions, driving efficiency, and creating value in every opportunity I pursue.",
-
-              style: TextStyle(height: 1.5),
+            Text(
+              isEmpty ? "-" : data.tentangSaya,
+              style: const TextStyle(height: 1.5),
             ),
           ),
-
           _modernCard(
             "Pengalaman",
             Icons.work_outline,
-            Column(
-              children: [
-                _experienceItem(
-                  "Founder & CEO",
-                  "PulsaLagi",
-                  "2025 - Sekarang",
-                ),
-                _experienceItem(
-                  "Production Staff",
-                  "PT. Markaz Jalan Bersama",
-                  "2023 - 2025",
-                ),
-              ],
-            ),
+            isEmpty
+                ? const Text("-")
+                : Column(
+                    children: [
+                      _experienceItem(
+                        data.expRole,
+                        data.expCompany,
+                        data.expYear,
+                      ),
+                    ],
+                  ),
           ),
-
           _modernCard(
             "Pendidikan",
             Icons.school_outlined,
-            const Text("Multimedia - SMK Pustek Serpong"),
+            Text(isEmpty ? "-" : data.pendidikan),
           ),
-
           _modernCard(
             "Kontak",
             Icons.contact_mail_outlined,
-            Column(
-              children: [
-                _contactItem(Icons.email, "tsabitdly@gmail.com"),
-                _contactItem(Icons.phone, "081398472004"),
-              ],
-            ),
+            isEmpty
+                ? const Text("-")
+                : Column(
+                    children: [
+                      _contactItem(Icons.email, data.email),
+                      _contactItem(Icons.phone, data.phone),
+                    ],
+                  ),
           ),
-
           const SizedBox(height: 20),
-
-          // BUTTON BAWAH
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: primaryColor,
@@ -245,7 +262,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   // ================= COMPONENT =================
-
   Widget _modernCard(String title, IconData icon, Widget child) {
     return Container(
       width: double.infinity,
